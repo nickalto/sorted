@@ -1,0 +1,13 @@
+{
+  "name": "sorted",
+  "version": "0.0.1",
+  "authors": [
+    "Nick Alto <nickalto@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": false,
+  "ignore": [],
+  "dependencies": {
+    "snap.svg": "~0.4.1"
+  }
+}
