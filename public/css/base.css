@@ -1,4 +1,112 @@
-#container {
+
+@import url(http://fonts.googleapis.com/css?family=Roboto:500,100,300,400);
+
+
+@font-face {
+  font-family: 'fontello';
+  src: url('/public/css/fonts/fontello/fontello.eot');
+  src: url('/public/css/fonts/fontello/fontello.eot?#iefix') format('embedded-opentype'),
+       url('/public/css/fonts/fontello/fontello.woff') format('woff'),
+       url('/public/css/fonts/fontello/fontello.ttf') format('truetype'),
+       url('/public/css/fonts/fontello/fontello.svg#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+
+[class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1.5em;
+  speak: none;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: 0.25em;
+  margin-top: 0.125em;
+  text-align: center;
+
+  font-variant: normal;
+  text-transform: none;
+
+  line-height: 1em;
+
+
+  margin-left: 0.25em;
+}
+
+.icon-play:before { content: '\e800'; }
+.icon-pause:before { content: '\e801'; }
+
+body {
+  background-color: #f9f9f9;
+}
+
+div#mergesort-card {
+  display: block;
+  overflow: hidden;
+  background-color: white;
+  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: 0.2s;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  margin: 1.5em;
+}
+
+div#mergesort-card .footer {
+  background-color: #FAFAFA;
+  padding: 2em;
+  color: rgba(0, 0, 0, 0.54);
+  box-shadow: 0px 0px 1px rgba(0,0,0,0.4);
+  position: relative;
+}
+
+div#mergesort-card .footer h2 {
+  font-family: roboto;
+  font-weight: 400;
+  margin: 0;
+}
+
+div#mergesort-card:hover {
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+  transition-delay: 0s;
+}
+
+a {
+  font-family: fontello;
+  position: absolute;
+  right: 3em;
+  bottom: 2em;
+  width: 3em;
+  height: 3em;
+  border-radius: 50%;
+  background-color: rgb(207, 207, 207);
+  opacity: 0.5;
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: 0.1s;
+}
+
+a:hover {
+  opacity: 1;
+  transition-delay: 0s;
+}
+
+div.footer a i:before {
+  width: 2.2em;
+  color: white;
+  height: 100%;
+  font-size: 1.5em;
+  text-align: center;
+  line-height: 2em;
+  margin: 0;
+}
+div.footer a i.icon-pause:before {
+  width: 2em;
+}
+
+.sorted-container {
   position: relative;
   height: 500px;
   -webkit-transform: rotate(180deg) scaleX(-1);
@@ -6,5 +114,7 @@
   -moz-transform: rotate(180deg) scaleX(-1);
   -o-transform: rotate(180deg) scaleX(-1);
   transform: rotate(180deg) scaleX(-1);
-  width: 100%;
+  width: 90%;
+  margin: 5%;
+  display: block;
 }

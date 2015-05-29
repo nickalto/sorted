@@ -1,83 +1,66 @@
 'use strict';
 
-define(['snap', 'bar', 'mergesort'], function(Snap, Bar, Mergesort) {
+define(['list', 'actionPanel', 'graphPanel', 'mergesort'], function(List, ActionPanel, GraphPanel, Mergesort) {
 
   var Graph = {
-    container: null,
+    options: null,
     list: [],
-    rawListValues: [],
     self: null,
-    algorithm: null,
-    clock_cycle: 0,
 
     initialize: function(id, options) {
-      self = this;
-      this.container = document.getElementById(id);
-      this.list = this.initializeList(options);
-      this.algorithm = options.algorithm ? options.algorithm : 'mergesort';
-      this.clock_cycle = options.clock_cycle ? options.clock_cycle : 500;
-      Mergesort.initialize({ raw: this.rawListValues, list: this.list, clock_cycle: this.clock_cycle, container: this.container });
+      self = Graph;
+      self.options = options;
+      self.card_container = document.getElementById(id);
+      self.algorithm = options.algorithm ? options.algorithm : 'Merge Sort';
+      self.clock_cycle = options.clock_cycle ? options.clock_cycle : 500;
+
+      var graph_container = GraphPanel.initialize(self.card_container);
+      self.graph_container = graph_container;
+
+      var list = List.initialize( self.graph_container, self.options);
+      self.list = list;
+      ActionPanel.initialize(self.card_container, self.algorithm, { pause: self.pause, resume: self.resume });
+
+      Mergesort.initialize({ list: list, clock_cycle: self.clock_cycle, container: self.graph_container, finished: Graph.finished });
       window.onresize = this.onResize;
 
     },
 
-    initializeList: function(options) {
-      var list_size = options.length ? options.length : 10;
-      var upper_bound = options.upper_bound ? options.upper_bound : 100;
-      var lower_bound = options.lower_bound ? options.lower_bound : 1;
-
-      var value_list = options.list ? options.list : this.generateList(list_size, lower_bound, upper_bound);
-      this.rawListValues = value_list;
-      var bar_list = this.transformList(value_list, container);
-      return bar_list;
+    pause: function() {
+      Mergesort.pause();
     },
 
-    generateList: function(list_size, lower_bound, upper_bound) {
-      var list = [];
+    resume: function() {
+      var self = Graph;
 
-      while( list.length < list_size ) {
-
-        var random_number = Math.round( Math.random() * (upper_bound - lower_bound) + lower_bound);
-
-        if( list.indexOf(random_number) == -1 ) {
-          list.push( random_number );
-        }
-
+      if( !Mergesort.isExecuting() ) {
+        self.restart();
+      } else {
+        Mergesort.resume();
       }
-
-      return list;
     },
 
-    transformList: function(list, container) {
-      var bar_list = [];
-      var max_height = Math.max.apply(null, list);
-      var value = 0;
-      var width = 0;
+    finished: function() {
+      ActionPanel.reset();
+    },
 
-      for( var i = 0; i < list.length; i++ ) {
-        value = list[i];
-        width = ( 1 / list.length ) ;
-
-        var bar = Bar.initialize({
-          container: container,
-          value: value,
-          width:  width,
-          height: ( value / max_height ),
-          x: ( i * width ),
-          y: 0
-        });
-
-        bar_list.push(bar);
-        bar.draw();
-
+    restart: function() {
+      var self = Graph;
+      for( var i = 0; i < self.list.length; i++ ) {
+        self.graph_container.removeChild(self.list[i].element);
       }
 
-      return bar_list;
+      var list = List.initialize(self.graph_container, self.options);
+      self.list = list;
+      Mergesort.initialize({ list: list, clock_cycle: self.clock_cycle, container: self.graph_container, finished: Graph.finished });
+      Mergesort.resume();
     },
 
     onResize: function() {
+      var self = Graph;
       for( var i = 0; i < self.list.length; i++ ) {
-        self.list[i].onResize();
+        var bar = self.list[i];
+        bar.onResize();
       }
     },
 

@@ -3,6 +3,12 @@
 define(['snap'], function(Snap) {
 
   var Bar = {
+    colors: {
+      normal: '#E0E0E0',
+      sorted: '#9E9E9E',
+      active: '#3f51b5',
+      finished: '#3f51b5',
+    },
 
     initialize: function(options) {
 
@@ -10,7 +16,7 @@ define(['snap'], function(Snap) {
 
       // Map attributes from options onto bar object.
       // Keep in mind width / height are relative to container width / height.
-      bar.parent_container = options.container;
+      bar.container = options.container;
       bar.selected = false;
       bar.highlighted = false;
       bar.relative_positions = {
@@ -20,16 +26,12 @@ define(['snap'], function(Snap) {
         height: options.height !== undefined ? options.height : 0,
       };
       bar.value = options.value !== undefined ? options.value : -1;
-      bar.width = bar.relative_positions.width * bar.parent_container.clientWidth;
-      bar.height = bar.relative_positions.height * bar.parent_container.clientHeight;
-      bar.x = bar.relative_positions.x * bar.parent_container.clientWidth;
+      bar.width = bar.relative_positions.width * bar.container.clientWidth;
+      bar.height = bar.relative_positions.height * bar.container.clientHeight;
+      bar.x = bar.relative_positions.x * bar.container.clientWidth;
       bar.y = bar.relative_positions.y;
-      bar.padding = 10;
-      bar.radius = 3;
-      bar.colors = {
-        default_fill: '#D5D5D5',
-        deselected_fill: '#909090'
-      };
+      bar.padding = bar.width / 10;
+      bar.radius = 0;
 
       // create svg element for snap to draw into for each bar element,
       // style each element and append them to parent container element,
@@ -41,18 +43,20 @@ define(['snap'], function(Snap) {
       bar.element.style.position = 'absolute';
       bar.element.style.overflow = 'visible';
 
-      bar.parent_container.appendChild(bar.element);
+      bar.container.appendChild(bar.element);
       bar.snap = Snap(bar.element);
 
       /**************************************************************
       * onResize
       *
       * on resize of browser window update bar positions with new
-      * clientWidth / clientHeight of parent_container.
+      * clientWidth / clientHeight of container.
       **************************************************************/
 
       bar.onResize = function() {
         var position = bar.updatePosition();
+        this.padding = this.width / 10;
+
         bar.svg.animate({
           x: position.x,
           y: position.y,
@@ -80,23 +84,13 @@ define(['snap'], function(Snap) {
       **************************************************************/
 
       bar.updatePosition = function() {
-        bar.width = bar.relative_positions.width * bar.parent_container.clientWidth;
-        bar.height = bar.relative_positions.height * bar.parent_container.clientHeight;
-        bar.x = bar.relative_positions.x * bar.parent_container.clientWidth;
+        bar.width = bar.relative_positions.width * bar.container.clientWidth;
+        bar.height = bar.relative_positions.height * bar.container.clientHeight;
+        bar.x = bar.relative_positions.x * bar.container.clientWidth;
         bar.y = bar.relative_positions.y;
         return bar._getPosition();
       };
 
-      bar.draw = function() {
-          // bar.relative_positions.x -= (3 * bar.relative_positions.width );
-          // var position = bar.updatePosition();
-
-          bar.svg.animate({
-            // x: position.x,
-            fill: bar.colors.deselected_fill
-          }, 500);
-
-      };
 
       /**************************************************************
       * _getPosition
@@ -126,7 +120,7 @@ define(['snap'], function(Snap) {
 
       bar.svg = bar.snap.rect(position.x, position.y, position.width, position.height, position.radius, position.radius);
       bar.svg.attr({
-        fill: bar.colors.default_fill,
+        fill: Bar.colors.normal,
         opacity: 0,
         width: 0,
       });
@@ -141,5 +135,6 @@ define(['snap'], function(Snap) {
 
   return {
     initialize: Bar.initialize,
+    colors: Bar.colors
   };
 });

@@ -5,21 +5,34 @@ define(['snap', 'bar'], function(Snap, Bar) {
   var mergesort = {
     container: null,
     list: [],
+    pause: true,
+    executing: false,
     clock_cycle: 0,
-    colors: {
-      normal: '#909090',
-      sorted: '#D5D5D5',
-      active: '#0E6A4C',
-      finished: '#FF0000',
-    },
 
     initialize: function(options) {
       var self = this;
       this.list = options.list;
+      this.finished = options.finished;
+      this.executing = true;
 
       var sorted = this.sort(this.list, function(l) {
-        self.highlightSelected(l, self.colors.finished);
+        self.executing = false;
+        self.highlightSelected(l, Bar.colors.finished);
+        self.pauseExecution();
+        self.finished();
       });
+    },
+
+    pauseExecution: function() {
+      this.pause = true;
+    },
+
+    resumeExecution: function() {
+      this.pause = false;
+    },
+
+    isExecuting: function() {
+      return this.executing;
     },
 
     findSwapItem: function(list, item, index) {
@@ -104,7 +117,7 @@ define(['snap', 'bar'], function(Snap, Bar) {
 
         var interval_id = setInterval(function() {
 
-          if( !lock ) {
+          if( !lock && !self.pause ) {
 
             if( lim > 1 && k < lim ) {
 
@@ -112,7 +125,7 @@ define(['snap', 'bar'], function(Snap, Bar) {
               var left = result[k];
               var right = result[k+1];
 
-              self.highlightSelected(left.concat(right), self.colors.active);
+              self.highlightSelected(left.concat(right), Bar.colors.active);
 
               self.merge(left, right, function(merged_list) {
                 list_offset = ( !list_offset ) ? merged_list.length : list_offset;
@@ -123,7 +136,7 @@ define(['snap', 'bar'], function(Snap, Bar) {
                   self.swap(merged_list, merged_list[i], offset_index + i );
                 }
 
-                self.highlightSelected(merged_list, self.colors.sorted);
+                self.highlightSelected(merged_list, Bar.colors.sorted);
 
                 result[j] = merged_list;
                 lock = false;
@@ -134,7 +147,7 @@ define(['snap', 'bar'], function(Snap, Bar) {
 
             } else if( lim > 1 ){
 
-              self.highlightSelected(self.list, self.colors.normal);
+              self.highlightSelected(self.list, Bar.colors.normal);
 
               lim = Math.floor( ( lim + 1 ) / 2 );
               j = 0;
@@ -154,6 +167,18 @@ define(['snap', 'bar'], function(Snap, Bar) {
   return {
     initialize: function(options) {
       mergesort.initialize(options);
+    },
+
+    pause: function() {
+      mergesort.pauseExecution();
+    },
+
+    resume: function() {
+      mergesort.resumeExecution();
+    },
+
+    isExecuting: function() {
+      return mergesort.isExecuting();
     }
   };
 });
