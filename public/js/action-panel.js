@@ -8,6 +8,13 @@ define(['button'], function(Button) {
     button: null,
     title: null,
 
+    /**************************************************************
+    * initialize
+    *
+    * copy container, title and callbacks and trigger button container
+    * initilize method
+    **************************************************************/
+
     initialize: function(card_container, title, callbacks) {
       self = this;
       self.title = title;
@@ -16,6 +23,13 @@ define(['button'], function(Button) {
       self.card_container = card_container;
       self.initializeButtonContainer();
     },
+
+    /**************************************************************
+    * initializeButtonContainer
+    *
+    * create button container and inject into the base card_container
+    * Initialize buttons and andd them to the action panel.
+    **************************************************************/
 
     initializeButtonContainer: function () {
 
@@ -35,6 +49,13 @@ define(['button'], function(Button) {
 
       self.card_container.appendChild(footer);
     },
+
+
+    /**************************************************************
+    * reset
+    *
+    * when algorithm completes reset button back to 'play' state
+    **************************************************************/
 
     reset: function() {
       self.button.reset();

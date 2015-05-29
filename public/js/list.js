@@ -5,6 +5,13 @@ define(['bar'], function(Bar) {
   var List = {
     graph_container: null,
 
+    /**************************************************************
+    * initialize
+    *
+    * create a new list of items if one is not provided and transform
+    * it into a list of animatable items.
+    **************************************************************/
+
     initialize: function(graph_container, options) {
       var bar_list = new Array();
       self.graph_container = graph_container ? graph_container : self.graph_container;
@@ -16,6 +23,12 @@ define(['bar'], function(Bar) {
       bar_list = this.transformList(value_list, self.graph_container);
       return bar_list;
     },
+
+    /**************************************************************
+    * generateList
+    *
+    * create a list of random elements within the given constraints.
+    **************************************************************/
 
     generateList: function(list_size, lower_bound, upper_bound) {
       var list = [];
@@ -32,6 +45,13 @@ define(['bar'], function(Bar) {
 
       return list;
     },
+
+    /**************************************************************
+    * transformList
+    *
+    * transform list from a raw list of numbers into a list of bar
+    * elements that are animatable.
+    **************************************************************/
 
     transformList: function(list, container) {
       var bar_list = [];

@@ -4,6 +4,12 @@ define([], function() {
 
   var GraphPanel = {
 
+    /**************************************************************
+    * initialize
+    *
+    * Create graph panel where snap.svg animations are injected
+    **************************************************************/
+
     initialize: function(card_container) {
 
       var graph_container = document.createElement('div');

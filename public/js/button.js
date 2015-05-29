@@ -4,6 +4,13 @@ define([], function() {
 
   var Button = {
 
+    /**************************************************************
+    * initialize
+    *
+    * Create new button, icons and hook up callbacks for button
+    * triggers.
+    **************************************************************/
+
     initialize: function(callbacks) {
       var button = new Object();
 

@@ -7,6 +7,13 @@ define(['list', 'actionPanel', 'graphPanel', 'mergesort'], function(List, Action
     list: [],
     self: null,
 
+    /**************************************************************
+    * initialize
+    *
+    * Create graph container, initialize list, create action panel
+    * and initialize algorithm.
+    **************************************************************/
+
     initialize: function(id, options) {
       self = Graph;
       self.options = options;
@@ -26,9 +33,22 @@ define(['list', 'actionPanel', 'graphPanel', 'mergesort'], function(List, Action
 
     },
 
+    /**************************************************************
+    * pause
+    *
+    * Triggered from button.js - pause algorithm.
+    **************************************************************/
+
     pause: function() {
       Mergesort.pause();
     },
+
+    /**************************************************************
+    * resume
+    *
+    * Triggered from button.js - resume algorithm execution - unless
+    * we are finished in which case restart the process.
+    **************************************************************/
 
     resume: function() {
       var self = Graph;
@@ -40,9 +60,22 @@ define(['list', 'actionPanel', 'graphPanel', 'mergesort'], function(List, Action
       }
     },
 
+    /**************************************************************
+    * finished
+    *
+    * Triggered from algorithm - update button state to restart.
+    **************************************************************/
+
     finished: function() {
       ActionPanel.reset();
     },
+
+    /**************************************************************
+    * restart
+    *
+    * Clear graph_container and re-initialize list - and start
+    * the algorithm again.
+    **************************************************************/
 
     restart: function() {
       var self = Graph;
@@ -56,6 +89,12 @@ define(['list', 'actionPanel', 'graphPanel', 'mergesort'], function(List, Action
       Mergesort.resume();
     },
 
+    /**************************************************************
+    * onResize
+    *
+    * On resize of the graph update the location of each bar in list.
+    **************************************************************/
+
     onResize: function() {
       var self = Graph;
       for( var i = 0; i < self.list.length; i++ ) {
@@ -63,9 +102,7 @@ define(['list', 'actionPanel', 'graphPanel', 'mergesort'], function(List, Action
         bar.onResize();
       }
     },
-
   };
-
 
 
   return {
