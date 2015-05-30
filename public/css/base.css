@@ -66,7 +66,10 @@ div#mergesort-card .footer {
 div#mergesort-card .footer h2 {
   font-family: roboto;
   font-weight: 400;
-  margin: 0;
+  margin: 0em 3.5em 0em 0em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 div#mergesort-card:hover {
